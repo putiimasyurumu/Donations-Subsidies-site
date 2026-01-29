@@ -30,7 +30,7 @@ body {
    HERO / HEADER (LPっぽく強化)
 ===================== */
 .header {
-  background: linear-gradient(135deg, var(--orange-strong), var(--orange));
+  background: linear-gradient(135deg, #ffffff 0%, var(--light-orange) 35%, var(--orange) 100%);
   color: var(--white);
   text-align: center;
   padding: 96px 20px 88px;

@@ -1,7 +1,7 @@
 :root {
   --orange: #f28c28;
   --orange-strong: #e86b12;
-  --light-orange: #FFE7B8;
+  --light-orange: #ffd075; /* ← ここを変更 */
   --white: #ffffff;
   --dark: #3a2a1f;
   --shadow: 0 10px 24px rgba(0, 0, 0, 0.08);

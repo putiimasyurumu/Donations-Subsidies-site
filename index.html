@@ -3,91 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>サポートホーム｜寄附・助成金サイト</title>
+  <title>サポートホーム｜寄附金・補助金のご案内</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="header">
     <div class="container">
-      <h1 class="logo">サポートホーム / ほっこりくろちゃん</h1>
-      <p class="tagline">住まいと食事で、人生の再出発を支える</p>
-      <a href="#donation" class="btn primary">寄附する</a>
+      <h1 class="logo">サポートホーム</h1>
+      <p class="tagline">住所不定者・生活困窮者の居宅支援と地域支援活動</p>
+      <div class="btn-group">
+        <a href="#donation" class="btn primary">寄附する</a>
+        <a href="#support" class="btn secondary">支援方法を見る</a>
+      </div>
     </div>
   </header>
 
-  <main>
-    <section class="section about">
-      <div class="container">
-        <h2>団体について</h2>
-        <p>
-          サポートホームは、住所不定となった方の居宅支援を行い、
-          ほっこりくろちゃんは居宅した方や地域の方への食事提供を行う団体です。
-        </p>
+  <section class="section about">
+    <div class="container">
+      <h2>団体概要</h2>
+      <div class="cards">
+        <div class="card">
+          <ul class="info-list">
+            <li>団体名：サポートホーム</li>
+            <li>設立年月日：2019年12月9日</li>
+            <li>代表者：南下建一郎</li>
+            <li>施設長：黒田美代子</li>
+            <li>所在地：京都市伏見区深草ヲカヤ町23-6</li>
+            <li>電話番号：075-645-8139</li>
+          </ul>
+        </div>
+        <div class="card">
+          <ul class="info-list">
+            <li>活動内容：</li>
+            <li>・住所不定者の居宅支援</li>
+            <li>・居宅者への食事提供</li>
+            <li>・地域活動（からあげ祭・地域清掃・炊き出し・畑作業など）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section donation" id="donation">
+    <div class="container">
+      <h2>寄附金のご案内</h2>
+      <div class="donation-box">
         <ul class="info-list">
-          <li>設立：2019.12.9</li>
-          <li>代表者：南下 建一郎</li>
-          <li>施設長（ほっこりくろちゃん）：黒田 美代子</li>
-          <li>所在地：京都市伏見区深草ヲカヤ町23-6 サポートホーム</li>
-          <li>電話：075-645-8139</li>
+          <li>寄附金の用途：居宅支援費、食事提供費、生活支援物資、地域活動費など</li>
+          <li>寄附方法：銀行振込・現金寄附・物資寄附</li>
+          <li>寄附金の使途報告：活動報告として公開予定</li>
         </ul>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="section activities">
-      <div class="container">
-        <h2>主な活動</h2>
-        <div class="cards">
-          <div class="card">
-            <h3>居宅支援</h3>
-            <p>住所不定となった方の一人暮らし支援、生活再建のサポート。</p>
-          </div>
-          <div class="card">
-            <h3>食事提供</h3>
-            <p>居宅者や地域の方への温かい食事の提供。</p>
-          </div>
-          <div class="card">
-            <h3>地域活動</h3>
-            <p>からあげ祭、地域清掃、炊き出し、畑作業など。</p>
-          </div>
-        </div>
-      </div>
-    </section>
+  <section class="section subsidy">
+    <div class="container">
+      <h2>補助金・助成金について</h2>
+      <ul class="info-list" id="subsidyList">
+        <li>行政補助金（自治体福祉関連事業）</li>
+        <li>民間財団の助成金</li>
+        <li>NPO・社会福祉関連助成金</li>
+      </ul>
+    </div>
+  </section>
 
-    <section class="section donation" id="donation">
-      <div class="container">
-        <h2>寄附のご案内</h2>
-        <p>皆さまの寄附は、居宅支援・食事提供・地域活動のために活用されます。</p>
-        <div class="donation-box">
-          <p>寄附方法：銀行振込 / 継続寄附（準備中）</p>
-          <p>寄附先情報：準備中</p>
-          <button id="donateBtn" class="btn secondary">寄附の詳細を見る</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="section subsidy">
-      <div class="container">
-        <h2>補助金・助成金</h2>
-        <p>福祉・地域活動に関する補助金・助成金を活用し、持続可能な支援を行います。</p>
-        <ul class="subsidy-list" id="subsidyList"></ul>
-      </div>
-    </section>
-
-    <section class="section support">
-      <div class="container">
-        <h2>支援の方法</h2>
-        <ul>
-          <li>寄附による支援</li>
-          <li>ボランティア参加</li>
-          <li>物資支援・企業協賛</li>
-        </ul>
-      </div>
-    </section>
-  </main>
+  <section class="section support" id="support">
+    <div class="container">
+      <h2>支援の方法</h2>
+      <ul class="info-list">
+        <li>寄附による支援</li>
+        <li>物資提供（食品・日用品など）</li>
+        <li>ボランティア参加</li>
+        <li>情報拡散・広報協力</li>
+      </ul>
+    </div>
+  </section>
 
   <footer class="footer">
     <div class="container">
-      <p>© サポートホーム / ほっこりくろちゃん</p>
+      <p>© サポートホーム All Rights Reserved.</p>
     </div>
   </footer>
 

@@ -1,8 +1,10 @@
 :root {
   --orange: #f28c28;
+  --orange-strong: #e86b12;
   --light-orange: #fff2e6;
   --white: #ffffff;
   --dark: #3a2a1f;
+  --shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -21,28 +23,62 @@ body {
 .container {
   max-width: 960px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 48px 20px;
 }
 
+/* =====================
+   HERO / HEADER (LPっぽく強化)
+===================== */
 .header {
-  background: linear-gradient(135deg, var(--orange), var(--light-orange));
+  background: linear-gradient(135deg, var(--orange-strong), var(--orange));
   color: var(--white);
   text-align: center;
-  padding: 80px 20px;
+  padding: 96px 20px 88px;
+  position: relative;
+  overflow: hidden;
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: var(--white);
+  border-radius: 50% 50% 0 0;
 }
 
 .logo {
-  font-size: 2rem;
-  margin-bottom: 10px;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
 }
 
 .tagline {
-  margin-bottom: 20px;
+  font-size: 1.05rem;
+  margin-bottom: 28px;
+  opacity: 0.95;
+}
+
+.hero-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cta-sub {
+  font-size: 0.85rem;
   opacity: 0.9;
 }
 
+/* =====================
+   SECTION
+===================== */
 .section {
-  padding: 40px 0;
+  padding: 56px 0;
 }
 
 .section:nth-child(even) {
@@ -51,22 +87,36 @@ body {
 
 h2 {
   color: var(--orange);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
 }
 
+/* =====================
+   CARD UI
+===================== */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
+  gap: 22px;
 }
 
 .card {
   background: var(--white);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 22px 22px 20px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* =====================
+   LIST DESIGN（統一）
+===================== */
 .info-list {
   list-style: none;
   padding-left: 0;
@@ -87,25 +137,29 @@ h2 {
   font-size: 10px;
 }
 
+/* =====================
+   BUTTONS / CTA
+===================== */
 .btn {
   display: inline-block;
-  padding: 12px 24px;
+  padding: 13px 30px;
   border-radius: 999px;
   border: none;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 700;
   text-decoration: none;
   transition: 0.2s ease;
+  letter-spacing: 0.02em;
 }
 
 .btn:hover {
   transform: translateY(-2px);
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
 .primary {
   background: var(--white);
-  color: var(--orange);
+  color: var(--orange-strong);
 }
 
 .secondary {
@@ -113,43 +167,78 @@ h2 {
   color: var(--white);
 }
 
+/* メイン寄付ボタン（強調） */
+.cta-main {
+  background: var(--white);
+  color: var(--orange-strong);
+  font-size: 1.15rem;
+  padding: 16px 42px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.cta-main:hover {
+  background: var(--light-orange);
+}
+
+/* 画面下固定CTA */
+.floating-cta {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 999;
+}
+
+.cta-float {
+  background: var(--orange-strong);
+  color: var(--white);
+  padding: 14px 28px;
+  font-size: 1rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.cta-float:hover {
+  background: var(--orange);
+}
+
+/* =====================
+   DONATION BOX
+===================== */
 .donation-box {
   background: var(--white);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow);
 }
 
-.subsidy-list {
-  margin-top: 10px;
-  padding-left: 20px;
-}
-
-.subsidy-list li {
-  margin-bottom: 6px;
-}
-
-.section.support ul {
-  padding-left: 20px;
-}
-
+/* =====================
+   FOOTER
+===================== */
 .footer {
   background: var(--orange);
   color: var(--white);
   text-align: center;
-  padding: 20px;
+  padding: 22px;
+  font-size: 0.9rem;
 }
 
+/* =====================
+   RESPONSIVE
+===================== */
 @media (max-width: 768px) {
   .header {
-    padding: 60px 16px;
+    padding: 72px 16px 64px;
   }
 
   .logo {
-    font-size: 1.6rem;
+    font-size: 1.7rem;
   }
 
   .container {
-    padding: 24px 16px;
+    padding: 32px 16px;
+  }
+
+  .cta-main {
+    font-size: 1.05rem;
+    padding: 14px 32px;
   }
 }

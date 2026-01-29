@@ -1,21 +1,19 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const donateBtn = document.getElementById("donateBtn");
-  if (donateBtn) {
-    donateBtn.addEventListener("click", () => {
-      alert("寄附の詳細は現在準備中です。\n銀行振込などの情報は後日掲載予定です。");
-    });
-  }
+const buttons = document.querySelectorAll(".amount-btn");
+const output = document.getElementById("selectedAmount");
 
-  const subsidyList = document.getElementById("subsidyList");
-  const subsidies = [
-    "自治体の福祉関連補助金",
-    "民間財団の助成金",
-    "地域活動支援助成金"
-  ];
-
-  subsidies.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    subsidyList.appendChild(li);
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const amount = btn.dataset.amount;
+    output.textContent = `選択された寄付額：${amount}円`;
   });
+});
+
+// スクロールで寄付ボタン強調
+window.addEventListener("scroll", () => {
+  const cta = document.querySelector(".cta-float");
+  if (window.scrollY > 400) {
+    cta.style.transform = "scale(1.05)";
+  } else {
+    cta.style.transform = "scale(1)";
+  }
 });

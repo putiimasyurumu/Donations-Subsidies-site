@@ -4,11 +4,12 @@ import smtplib
 from pathlib import Path
 from datetime import datetime
 from email.message import EmailMessage
+from urllib.parse import quote
 from uuid import uuid4
 
 import pymysql
 from dotenv import load_dotenv
-from flask import Flask, abort, jsonify, render_template, request, send_file, send_from_directory
+from flask import Flask, abort, jsonify, redirect, render_template, request, send_file, send_from_directory
 from werkzeug.middleware.proxy_fix import ProxyFix
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
@@ -19,6 +20,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+app.json.ensure_ascii = False
 default_receipt_dir = f"/tmp/donation_receipts_{os.geteuid()}"
 RECEIPT_DIR = Path(os.getenv("RECEIPT_DIR", default_receipt_dir))
 RECEIPT_DIR.mkdir(parents=True, exist_ok=True)
@@ -40,6 +42,27 @@ DB_PORT = int(os.getenv("DB_PORT", "3306"))
 DB_USER = os.getenv("DB_USER", "kifukin_user")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 DB_NAME = os.getenv("DB_NAME", "donation")
+CREDIT_CARD_INPUT_URL = os.getenv("CREDIT_CARD_INPUT_URL", "").strip()
+
+
+def parse_multiline_env(value: str) -> str:
+    normalized = (
+        (value or "")
+        .replace("\r\n", "\n")
+        .replace("\\r\\n", "\n")
+        .replace("\\n", "\n")
+        .replace("¥n", "\n")
+        .strip()
+    )
+    # Fallback for values like "支店n普通 1234n口座名義..." (missing backslash).
+    if "\n" not in normalized and "n" in normalized:
+        parts = [part.strip() for part in normalized.split("n")]
+        if len(parts) >= 2 and all(parts):
+            normalized = "\n".join(parts)
+    return normalized
+
+
+BANK_TRANSFER_INFO = parse_multiline_env(os.getenv("BANK_TRANSFER_INFO", ""))
 
 
 @app.route("/", methods=["GET"])
@@ -121,23 +144,63 @@ def draw_issuer_assets(c: canvas.Canvas) -> None:
         pass
 
 
-def send_receipt_email(name: str, email: str, pdf_bytes: bytes) -> None:
+def normalize_payment_method(payment_method: str) -> str:
+    value = payment_method.strip()
+    if value in {"銀行振込", "振込", "振り込み"}:
+        return "bank_transfer"
+    if value in {"クレジットカード"}:
+        return "credit_card"
+    return "cash"
+
+
+def build_credit_card_input_url(certificate_no: str) -> str:
+    base_url = CREDIT_CARD_INPUT_URL or f"{request.url_root.rstrip('/')}/donation/payment/credit-card"
+    separator = "&" if "?" in base_url else "?"
+    return f"{base_url}{separator}certificate_no={quote(certificate_no)}"
+
+
+def send_receipt_email(
+    name: str,
+    email: str,
+    pdf_bytes: bytes,
+    payment_method: str,
+    credit_card_input_url: str,
+) -> None:
     if not SMTP_USER or not SMTP_PASS or not FROM_MAIL:
         raise RuntimeError("SMTP設定が未完了です。SMTP_USER / SMTP_PASS / FROM_MAIL を設定してください。")
+
+    payment_kind = normalize_payment_method(payment_method)
+    body_lines = [
+        f"{name} 様",
+        "",
+        "この度はご寄附ありがとうございます。",
+        "受領書をPDFにてお送りいたします。",
+        "",
+    ]
+    if payment_kind == "bank_transfer":
+        body_lines.extend(
+            [
+                "【お振込先情報】",
+                BANK_TRANSFER_INFO or "振込先情報が未設定です。運営までお問い合わせください。",
+                "",
+            ]
+        )
+    elif payment_kind == "credit_card":
+        body_lines.extend(
+            [
+                "【クレジットカード情報入力】",
+                "以下のページからカード情報をご入力ください。",
+                credit_card_input_url,
+                "",
+            ]
+        )
+    body_lines.extend(["NPO法人ほっこり"])
 
     msg = EmailMessage()
     msg["Subject"] = "【NPO法人ほっこり】寄付受領書"
     msg["From"] = FROM_MAIL
     msg["To"] = email
-    msg.set_content(
-        f"""{name} 様
-
-この度はご寄附ありがとうございます。
-受領書をPDFにてお送りいたします。
-
-NPO法人ほっこり
-"""
-    )
+    msg.set_content("\n".join(body_lines))
     msg.add_attachment(
         pdf_bytes,
         maintype="application",
@@ -201,7 +264,8 @@ def create_receipt_record(
     donated_at: datetime,
 ) -> tuple[int, str]:
     with conn.cursor() as cur:
-        temp_certificate_no = f"TEMP-{uuid4().hex}"
+        # certificate_no is VARCHAR(32), so keep temporary value within 32 chars.
+        temp_certificate_no = f"TEMP-{uuid4().hex[:27]}"
         cur.execute(
             """
             INSERT INTO donation_receipts (
@@ -290,6 +354,42 @@ def db_check():
             conn.close()
 
 
+@app.route("/db-check/receipts", methods=["GET"])
+def db_check_receipts():
+    conn = None
+    try:
+        conn = get_db_connection()
+        with conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*) AS total FROM donation_receipts")
+            total = cur.fetchone()["total"]
+
+            cur.execute(
+                """
+                SELECT
+                    id,
+                    certificate_no,
+                    donor_name,
+                    donor_email,
+                    amount_yen,
+                    payment_method,
+                    status,
+                    donated_at,
+                    created_at
+                FROM donation_receipts
+                ORDER BY id DESC
+                LIMIT 20
+                """
+            )
+            rows = cur.fetchall()
+
+        return jsonify({"ok": True, "total": total, "rows": rows}), 200
+    except Exception as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 500
+    finally:
+        if conn:
+            conn.close()
+
+
 @app.route("/submit", methods=["POST"])
 @app.route("/submit/", methods=["POST"])
 def submit():
@@ -336,8 +436,16 @@ def submit():
         certificate_no=certificate_no,
     )
 
+    credit_card_input_url = build_credit_card_input_url(certificate_no)
+
     try:
-        send_receipt_email(name=name, email=email, pdf_bytes=pdf_bytes)
+        send_receipt_email(
+            name=name,
+            email=email,
+            pdf_bytes=pdf_bytes,
+            payment_method=payment_method,
+            credit_card_input_url=credit_card_input_url,
+        )
     except Exception as exc:
         app.logger.exception("Failed to send receipt email")
         conn = None
@@ -368,7 +476,25 @@ def submit():
             except Exception:
                 pass
 
-    return render_template("thanks.html", name=name, token=token, certificate_no=certificate_no)
+    payment_kind = normalize_payment_method(payment_method)
+    if payment_kind == "credit_card":
+        return redirect(credit_card_input_url)
+
+    return render_template(
+        "thanks.html",
+        name=name,
+        token=token,
+        certificate_no=certificate_no,
+        payment_method=payment_method,
+        payment_kind=payment_kind,
+        bank_transfer_info=BANK_TRANSFER_INFO,
+    )
+
+
+@app.route("/payment/credit-card", methods=["GET"])
+def credit_card_input_page():
+    certificate_no = request.args.get("certificate_no", "").strip()
+    return render_template("credit_card.html", certificate_no=certificate_no)
 
 
 if __name__ == "__main__":

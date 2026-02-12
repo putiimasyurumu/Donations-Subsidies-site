@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>クレジットカード情報入力</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .cc-hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #fff6e6 0%, #ffd075 40%, #f28c28 100%);
+    }
+    .cc-hero .container {
+      padding-top: 54px;
+      padding-bottom: 54px;
+      text-align: center;
+    }
+    .cc-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .cc-form label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 700;
+      color: #3a2a1f;
+    }
+    .cc-form input {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px 14px;
+      border: 1px solid #efdfc9;
+      border-radius: 10px;
+      background: #fff;
+      font-size: 1rem;
+    }
+    .cc-form input:focus {
+      outline: none;
+      border-color: #f28c28;
+      box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.2);
+    }
+    .cert {
+      margin-top: 12px;
+      color: #5f4b3d;
+    }
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <header class="cc-hero">
+    <div class="light-rays"></div>
+    <div class="container">
+      <h1>クレジットカード情報入力</h1>
+      <p>以下にカード情報をご入力ください。</p>
+      {% if certificate_no %}
+      <p class="cert">証明書番号: {{ certificate_no }}</p>
+      {% endif %}
+    </div>
+  </header>
+
+  <section class="section bg-light">
+    <div class="container cc-wrap">
+      <div class="card">
+        <form class="cc-form" method="GET" action="/donation/">
+          <label>
+            カード名義
+            <input type="text" name="card_holder" autocomplete="cc-name" required>
+          </label>
+          <label>
+            カード番号
+            <input type="text" name="card_number" autocomplete="cc-number" inputmode="numeric" required>
+          </label>
+          <label>
+            有効期限 (MM/YY)
+            <input type="text" name="card_exp" autocomplete="cc-exp" required>
+          </label>
+          <label>
+            セキュリティコード
+            <input type="text" name="card_cvc" autocomplete="cc-csc" inputmode="numeric" required>
+          </label>
+          <p class="cert">決済処理は現在準備中です。入力後は寄付ページへ戻れます。</p>
+          <div class="actions">
+            <button class="btn-donate" type="submit">寄付ページへ戻る</button>
+            <a class="btn-sub" href="/donation/">寄付ページへ戻る</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

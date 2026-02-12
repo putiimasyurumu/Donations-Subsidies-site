@@ -48,6 +48,25 @@
       gap: 12px;
       margin-top: 22px;
     }
+    .payment-box {
+      margin-top: 14px;
+      border: 1px solid #f0c58a;
+      background: #fff7eb;
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .payment-box h2 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      color: #3a2a1f;
+    }
+    .payment-box pre {
+      margin: 0;
+      white-space: pre-wrap;
+      font-family: inherit;
+      color: #5f4b3d;
+      line-height: 1.7;
+    }
 
     .btn-donate {
       border: none;
@@ -92,7 +111,14 @@
       <div class="card">
         <p class="thanks-message"><span class="name">{{ name }}</span> 様、ご支援ありがとうございます。</p>
         <p class="thanks-message">証明書番号：<span class="name">{{ certificate_no }}</span></p>
+        <p class="thanks-message">支払方法：<span class="name">{{ payment_method }}</span></p>
         <p class="thanks-message">受領書PDFはご入力のメールアドレスへ送信しました。</p>
+        {% if payment_kind == "bank_transfer" %}
+        <div class="payment-box">
+          <h2>お振込先情報</h2>
+          <pre>{{ bank_transfer_info or "振込先情報が未設定です。運営までお問い合わせください。" }}</pre>
+        </div>
+        {% endif %}
         <div class="actions">
           <a class="btn-donate" href="/download/{{ token }}">受領書PDFをダウンロード</a>
           <a class="btn-donate" href="/donation/">寄付ページへ戻る</a>

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>サポートホーム 寄付金チラシ</title>
+  <style>
+    :root {
+      --orange: #f28c28;
+      --orange-strong: #e86b12;
+      --orange-light: #ffe2b3;
+      --ink: #3a2a1f;
+      --paper: #fffdf8;
+      --line: #f0c28e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #fff6ea;
+      font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .flyer {
+      width: 200mm;
+      min-height: 287mm;
+      margin: 12px auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 14mm 13mm 10mm;
+      color: #fff;
+      background:
+        radial-gradient(circle at 84% 8%, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 36%),
+        linear-gradient(132deg, #f29a39 0%, #f28c28 42%, #e86b12 100%);
+    }
+
+    .hero h1 {
+      margin: 0 0 6mm;
+      font-size: 9.4mm;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 3.8mm;
+      max-width: 150mm;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 6mm;
+      padding: 8mm 10mm;
+    }
+
+    .left-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .right-col {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .block {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 3mm;
+      padding: 4mm;
+    }
+
+    .block h2 {
+      margin: 0 0 3mm;
+      font-size: 4.6mm;
+      color: var(--orange-strong);
+      padding-bottom: 1.4mm;
+      border-bottom: 0.35mm solid #f2c38f;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 5mm;
+      font-size: 3.6mm;
+    }
+
+    .list li { margin-bottom: 1.5mm; }
+
+    .photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5mm;
+      margin-top: 3mm;
+    }
+
+    .photos img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 2mm;
+      border: 1px solid #efdfcc;
+    }
+
+    .cta {
+      margin-top: 5mm;
+      background: linear-gradient(135deg, #fff3df, #ffe7c1);
+      border: 1px solid #f6c27c;
+      border-radius: 3mm;
+      padding: 4mm;
+    }
+
+    .cta p {
+      margin: 0 0 3mm;
+      font-size: 3.6mm;
+      font-weight: 700;
+      color: #954d18;
+    }
+
+    .cta a {
+      display: inline-block;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--orange-strong), var(--orange));
+      color: #fff;
+      border-radius: 999px;
+      padding: 2.4mm 6mm;
+      font-size: 3.6mm;
+      font-weight: 700;
+    }
+
+    .donate-box {
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .donate-box .url {
+      font-size: 3.5mm;
+      margin: 2mm 0 3mm;
+      word-break: break-all;
+      color: #8a552a;
+    }
+
+    .qr {
+      width: 34mm;
+      height: 34mm;
+      margin: 6mm auto 7mm;
+      border: 1px solid #efdfcc;
+      border-radius: 2mm;
+      background: #fff;
+      padding: 1.5mm;
+    }
+
+    .qr img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .contact {
+      margin-top: 4mm;
+      text-align: left;
+      font-size: 3.6mm;
+    }
+
+    .activities-block {
+      margin-top: 4mm;
+    }
+
+    .footer {
+      padding: 0 12mm 10mm;
+      font-size: 3.3mm;
+      color: #8a705a;
+    }
+
+    @media screen and (max-width: 900px) {
+      .flyer {
+        width: 100%;
+        min-height: auto;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .right-col {
+        justify-content: flex-start;
+      }
+
+      .donate-box,
+      .activities-block {
+        min-height: 0;
+      }
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        display: flex;
+        justify-content: center;
+      }
+      .flyer {
+        width: 200mm;
+        min-height: 287mm;
+        margin: 0 auto;
+        border: none;
+        box-shadow: none;
+      }
+
+      .grid {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+
+      .right-col {
+        justify-content: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+  <article class="flyer" aria-label="サポートホーム寄付金チラシ">
+    <header class="hero">
+      <h1>住まいを失った人に、<br>もう一度「暮らし」と「つながり」を。</h1>
+      <p>
+        サポートホーム／ほっこりくろちゃんは、ホームレス状態・住所不定状態にある方へ、
+        居宅支援と地域に根ざした食事・生活支援を行っています。
+      </p>
+    </header>
+
+    <section class="grid">
+      <div class="left-col">
+        <section class="block">
+          <h2>団体概要</h2>
+          <ul class="list">
+            <li>団体名：NPO法人ほっこり サポートホーム／ほっこりくろちゃん</li>
+            <li>設立年月日：2019年12月9日</li>
+            <li>所在地：京都市伏見区深草ヲカヤ町23-6</li>
+            <li>電話番号：075-645-8139</li>
+          </ul>
+        </section>
+
+        <section class="block activities-block">
+          <h2>主な活動内容</h2>
+          <ul class="list">
+            <li>居宅支援：住まい再建に向けた生活相談・移行支援</li>
+            <li>食事提供：地域や居宅者への温かい食事支援</li>
+            <li>地域活動：清掃・炊き出し・交流イベントの実施</li>
+          </ul>
+          <div class="photos">
+            <img src="../images/meal1.png" alt="食事提供">
+            <img src="../images/community1.png" alt="地域活動">
+          </div>
+        </section>
+      </div>
+
+      <div class="right-col">
+        <section class="block donate-box">
+          <h2>寄附のお願い</h2>
+          <p class="url">http://13.40.64.196/</p>
+          <div class="qr" aria-label="寄附サイトQR">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=360x360&data=http%3A%2F%2F13.40.64.196%2F&color=e86b12&bgcolor=ffffff&qzone=0" alt="寄附サイトQRコード">
+          </div>
+          <div class="contact">
+            <div><strong>MAIL</strong> kyoto.s.home@gmail.com</div>
+            <div><strong>TEL</strong> 075-645-8139</div>
+          </div>
+          <div class="cta">
+            <p>寄附金は居宅支援・食事支援・地域活動のために活用します。</p>
+            <a href="http://13.40.64.196/">今すぐ寄付する</a>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <footer class="footer">
+      © サポートホーム／ほっこりくろちゃん
+    </footer>
+  </article>
+</body>
+</html>

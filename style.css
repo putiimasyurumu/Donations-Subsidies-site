@@ -1,0 +1,252 @@
+:root {
+  --orange: #f28c28;
+  --orange-strong: #e86b12;
+  --light-orange: #ffd075;
+  --white: #ffffff;
+  --dark: #3a2a1f;
+  --shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  scroll-behavior: smooth;
+  font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  color: var(--dark);
+  background: var(--white);
+  line-height: 1.7;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* ===== ヘッダー ===== */
+
+.header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fff6e6 0%, var(--light-orange) 40%, var(--orange) 100%);
+}
+
+/* 光の差し込み */
+.light-rays {
+  position: absolute;
+  top: 0;
+  right: -20%;
+  width: 60%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 30%, rgba(255,255,255,0) 70%);
+  filter: blur(20px);
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* ヒーロー（中央寄せ） */
+
+.hero {
+  display: flex;
+  align-items: center;
+}
+
+.hero-center {
+  justify-content: center;
+  text-align: center;
+  min-height: 320px;
+}
+
+.hero-text h1 {
+  font-size: 2.7rem;
+  margin-bottom: 16px;
+}
+
+.hero-text p {
+  margin-bottom: 24px;
+  font-size: 1.1rem;
+}
+
+/* 寄付ボタン */
+
+.btn-donate {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--orange-strong), var(--orange));
+  color: var(--white);
+  padding: 14px 36px;
+  border-radius: 999px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.1rem;
+  box-shadow: 0 10px 20px rgba(242, 140, 40, 0.35);
+  transition: 0.2s ease;
+}
+
+.btn-donate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(242, 140, 40, 0.45);
+}
+
+.btn-donate.large {
+  margin-top: 20px;
+  font-size: 1.25rem;
+  padding: 16px 44px;
+}
+
+/* ===== セクション ===== */
+
+.section {
+  padding: 60px 0;
+}
+
+.bg-light {
+  background: #fff7eb;
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--orange-strong);
+  margin-bottom: 24px;
+}
+
+/* カード */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* 団体メッセージを上下左右中央に配置 */
+
+.center-message {
+  display: flex;
+  justify-content: center;   /* 横中央 */
+  align-items: center;       /* 縦中央 */
+  text-align: center;
+  min-height: 180px;         /* 高さ（調整OK） */
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+
+/* リスト */
+
+.info-list {
+  list-style: none;
+}
+
+.info-list li {
+  margin-bottom: 6px;
+  margin-left: 17px;
+  position: relative;
+}
+
+.info-list li::before {
+  content: "●";
+  color: var(--orange);
+  position: absolute;
+  margin-left: -18px;
+  top: 5px;
+  font-size: 10px;
+}
+
+/* 活動セクション */
+
+.activity {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 50px;
+  align-items: center;
+}
+
+.activity.reverse {
+  direction: rtl;
+}
+
+.activity.reverse div {
+  direction: ltr;
+}
+
+/* 画像グループ */
+
+.activity-images img {
+  width: 100%;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+/* 2枚並べる */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* テキストのみ活動 */
+
+.text-only {
+  grid-template-columns: 1fr;
+  background: var(--white);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+.activity h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* 寄付ボックス */
+
+.donation-box {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+/* フッター */
+
+.footer {
+  background: var(--orange);
+  color: var(--white);
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+}
+
+/* ===== レスポンシブ ===== */
+
+@media (max-width: 900px) {
+  .activity {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-text h1 {
+    font-size: 2.1rem;
+  }
+}
